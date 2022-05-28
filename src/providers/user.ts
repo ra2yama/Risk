@@ -3,15 +3,15 @@ import { useAuthState } from "react-firebase-hooks/auth"
 import { useState }  from "react"
 import { createContainer } from "unstated-next"
 
-const { auth } = initFirebase()
+const { auth, firestore } = initFirebase()
 
 export const useUser = () => {
     let [user, loading, error] = useAuthState(auth)
-    return { auth, user, loading, error}
+    return { auth, firestore, user, loading, error}
 }
 
 export const useUserData = () => {
-    let [userData, setUserData] = useState()
+    let [userData, setUserData] = useState<UserData>()
     let [loading, setLoading] = useState<boolean>(false)
     let [error, setError] = useState<Error>()
 
@@ -20,3 +20,7 @@ export const useUserData = () => {
 
 export const User = createContainer(useUser)
 export const Userdata = createContainer(useUserData)
+
+export interface UserData {
+    username: string
+}

@@ -3,9 +3,10 @@ import {User} from "../providers/user";
 import { Header } from "./Header";
 import { Error } from "./Error";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { collection, doc, Firestore, setDoc } from 'firebase/firestore';
 
 export const Signup = () => {
-    const { auth } = User.useContainer()
+    const { auth, firestore } = User.useContainer()
 
     let [email, setEmail] = useState("")
     let [username, setUsername] = useState("")
@@ -25,7 +26,13 @@ export const Signup = () => {
             setError(new (Error as any)('Username cannot be empty'))
         }
 
-        createUserWithEmailAndPassword(auth, email, password).catch(setError)
+        createUserWithEmailAndPassword(auth, email, password).then(user => {
+            let users = collection(firestore, 'users');
+
+            setDoc(doc(users, user.user.uid), {
+                "username": username
+            }).catch(setError)
+        }).catch(setError)
 
     }
 

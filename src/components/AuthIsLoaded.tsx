@@ -1,6 +1,7 @@
 import React from "react"
-import { User } from "../providers/user"
+import { User, Userdata } from "../providers/user"
 import Loading from "../components/Loading"
+import { UserIsLoaded } from "./UserIsLoaded"
 
 
 const AuthIsLoaded = (props: any) => {
@@ -11,7 +12,11 @@ const AuthIsLoaded = (props: any) => {
             <Loading/> :
         error ?
             <p>{error}</p> :
-        <React.Fragment>{props.children}</React.Fragment>
+            <Userdata.Provider>
+                <UserIsLoaded>
+                    <React.Fragment>{props.children}</React.Fragment>
+                </UserIsLoaded>
+            </Userdata.Provider>
     )
 }
 

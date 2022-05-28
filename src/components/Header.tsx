@@ -1,9 +1,10 @@
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { User } from '../providers/user';
+import { User, Userdata } from '../providers/user';
 
 export const Header = () => {
-    const {user, auth} = User.useContainer()
+    const { user, auth } = User.useContainer()
+    const { userData } = Userdata.useContainer()
 
     return (
         <header>
@@ -17,6 +18,9 @@ export const Header = () => {
                 }
                 <Link to="/rules">Rules </Link>
                 <Link to="/play">Play</Link>
+                {
+                    user && <Link to="/profile">{userData?.username || user.email}</Link>
+                }
             </div>
         </header>
     )
